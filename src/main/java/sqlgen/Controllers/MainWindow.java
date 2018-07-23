@@ -59,7 +59,8 @@ public class MainWindow {
         Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasString()) {
-            String labelText = "Archivo seleccionado:\n"+ db.getString();
+            String fileURL = db.getString();
+            String labelText = "Archivo seleccionado:\n"+ extraerNombreDeArchivo(fileURL);
             dropLabel.setText(labelText);
             success = true;
         }
@@ -68,6 +69,11 @@ public class MainWindow {
         event.setDropCompleted(success);
 
         event.consume();
+    }
+
+    private String extraerNombreDeArchivo(String fileURL) {
+        String[] fileURLArray = fileURL.split("/");
+        return fileURLArray[fileURLArray.length-1];
     }
 
     public void handleDragDone(DragEvent event) {
