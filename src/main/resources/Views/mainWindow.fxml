@@ -17,7 +17,6 @@
             onDragEntered="#handleDragEntered"
             onDragExited="#handleDragExited"
             onDragDropped="#handleDragDropped"
-            onDragDone="#handleDragDone"
             fx:id="dropPanel">
     <center>
         <Label text="Arrastre su lista de articulos aqui" BorderPane.alignment="CENTER" />

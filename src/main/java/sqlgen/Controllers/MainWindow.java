@@ -9,6 +9,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import sqlgen.ConversorExcel;
 
 public class MainWindow {
     @FXML
@@ -30,8 +31,6 @@ public class MainWindow {
         }
 
         event.consume();
-
-
     }
 
     public void handleDragEntered(DragEvent event) {
@@ -59,11 +58,14 @@ public class MainWindow {
         Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasString()) {
-            String fileURL = db.getString();
+            String fileURL = extraerURL(db.getString());
             String labelText = "Archivo seleccionado:\n"+ extraerNombreDeArchivo(fileURL);
             dropLabel.setText(labelText);
             success = true;
+
+            if(urlValida(fileURL)) ConversorExcel.convertir(fileURL);
         }
+
         /* let the source know whether the string was successfully
          * transferred and used */
         event.setDropCompleted(success);
@@ -71,19 +73,25 @@ public class MainWindow {
         event.consume();
     }
 
+    ////////////////////////
+    ////////////////////////
+    ////////////////////////
+
+    private boolean urlValida(String rawFileUrl) {
+        String fileName = extraerNombreDeArchivo(rawFileUrl);
+        if(!fileName.contains("xls")){System.out.printf(fileName);return false;}
+
+        return true;
+    }
+
     private String extraerNombreDeArchivo(String fileURL) {
         String[] fileURLArray = fileURL.split("/");
         return fileURLArray[fileURLArray.length-1];
     }
 
-    public void handleDragDone(DragEvent event) {
-        /* the drag-and-drop gesture ended */
-        System.out.println("onDragDone");
-        /* if the data was successfully moved, clear it */
-//        if (event.getTransferMode() == TransferMode.MOVE) {
-//            source.setText("");
-//        }
-
-        event.consume();
+    private String extraerURL(String rawFileURL) {
+        return rawFileURL.split("://")[1].trim();
     }
 }
+
+
