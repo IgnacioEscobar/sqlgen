@@ -27,3 +27,7 @@ hs_err_pid*
     Privacy
     Security
 
+######
+
+/.idea
+*.iml
